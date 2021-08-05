@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { auth, provider } from "../firebase";
@@ -18,7 +19,11 @@ const Header = () => {
   const userName = useAppSelect(selectUserName);
   const userEmail = useAppSelect(selectUserEmail);
   const userPhoto = useAppSelect(selectUserPhoto) as string;
-  console.log(userPhoto, "userPhoto");
+
+  useEffect(() => {
+    userName !== null ? history.push("/home") : history.push("/");
+  }, [userName]);
+
   const handleSignIn = () => {
     auth
       .signInWithPopup(provider)
