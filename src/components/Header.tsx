@@ -3,37 +3,48 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { auth, provider } from "../firebase";
 import { useAppSelect, useAppDispatch } from "../redux/configStore";
-import { setUserLoginDetails, UserState } from "../redux/modules/user";
+import {
+  setUserLoginDetails,
+  setSignOutState,
+  UserState,
+  selectUserName,
+  selectUserEmail,
+  selectUserPhoto,
+} from "../redux/modules/user";
 const Header = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const handleAuth = () => {
+
+  const userName = useAppSelect(selectUserName);
+  const userEmail = useAppSelect(selectUserEmail);
+  const userPhoto = useAppSelect(selectUserPhoto) as string;
+  console.log(userPhoto, "userPhoto");
+  const handleSignIn = () => {
     auth
       .signInWithPopup(provider)
       .then((result) => {
-        console.log(
-          typeof result.user?.displayName,
-          typeof result.user?.email,
-          typeof result.user?.photoURL
-        );
-
         const userData: UserState = {
           name: result.user?.displayName,
           email: result.user?.email,
           photo: result.user?.photoURL,
         };
-
         dispatch(setUserLoginDetails(userData));
       })
       .catch((error) => {
         alert(error.message);
       });
   };
+
+  const handleSignOut = () => {
+    dispatch(setSignOutState());
+  };
+
   return (
     <Nav>
       <Logo>
         <img src="/images/logo.svg" alt="" />
       </Logo>
+
       <NavMenu>
         <a href="/home">
           <img src="/images/home-icon.svg" alt="HOME" />
@@ -60,7 +71,18 @@ const Header = () => {
           <span>SERIES</span>
         </a>
       </NavMenu>
-      <Login onClick={() => handleAuth()}>Login</Login>
+      {!userName ? (
+        <Login onClick={() => handleSignIn()}>Login</Login>
+      ) : (
+        <>
+          <SignOut>
+            <UserImg src={userPhoto} alt={userName} />
+            <DropDown>
+              <span onClick={() => handleSignOut()}>Sign out</span>
+            </DropDown>
+          </SignOut>
+        </>
+      )}
     </Nav>
   );
 };
@@ -187,5 +209,26 @@ const DropDown = styled.div`
   letter-spacing: 3px;
   width: 100px;
   opacity: 0;
+`;
+
+const SignOut = styled.div`
+  position: relative;
+  height: 48px;
+  width: 48px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  ${UserImg} {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+  }
+  &:hover {
+    ${DropDown} {
+      opacity: 1;
+      transition-duration: 1s;
+    }
+  }
 `;
 export default Header;
