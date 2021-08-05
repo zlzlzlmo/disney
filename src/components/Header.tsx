@@ -1,6 +1,34 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { auth, provider } from "../firebase";
+import { useAppSelect, useAppDispatch } from "../redux/configStore";
+import { setUserLoginDetails, UserState } from "../redux/modules/user";
 const Header = () => {
+  const dispatch = useAppDispatch();
+  const history = useHistory();
+  const handleAuth = () => {
+    auth
+      .signInWithPopup(provider)
+      .then((result) => {
+        console.log(
+          typeof result.user?.displayName,
+          typeof result.user?.email,
+          typeof result.user?.photoURL
+        );
+
+        const userData: UserState = {
+          name: result.user?.displayName,
+          email: result.user?.email,
+          photo: result.user?.photoURL,
+        };
+
+        dispatch(setUserLoginDetails(userData));
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
   return (
     <Nav>
       <Logo>
@@ -32,7 +60,7 @@ const Header = () => {
           <span>SERIES</span>
         </a>
       </NavMenu>
-      <Login>Login</Login>
+      <Login onClick={() => handleAuth()}>Login</Login>
     </Nav>
   );
 };
