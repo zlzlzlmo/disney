@@ -41,7 +41,13 @@ const Header = () => {
   };
 
   const handleSignOut = () => {
-    dispatch(setSignOutState());
+    auth
+      .signOut()
+      .then(() => {
+        dispatch(setSignOutState());
+        history.push("/");
+      })
+      .catch((error) => alert(error.message));
   };
 
   return (
