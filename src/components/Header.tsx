@@ -9,7 +9,6 @@ import {
   setSignOutState,
   UserState,
   selectUserName,
-  selectUserEmail,
   selectUserPhoto,
 } from "../redux/modules/user";
 const Header = () => {
@@ -17,7 +16,6 @@ const Header = () => {
   const history = useHistory();
 
   const userName = useAppSelect(selectUserName);
-  const userEmail = useAppSelect(selectUserEmail);
   const userPhoto = useAppSelect(selectUserPhoto) as string;
 
   useEffect(() => {

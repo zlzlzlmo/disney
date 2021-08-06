@@ -8,7 +8,7 @@ import Trending from "./Trending";
 import Viewers from "./Viewers";
 import db from "../firebase";
 import { useEffect } from "react";
-import { Movie, setMovies } from "../redux/modules/movies";
+import { setMovies } from "../redux/modules/movies";
 import { useAppDispatch } from "../redux/configStore";
 const Home = () => {
   const dispatch = useAppDispatch();
