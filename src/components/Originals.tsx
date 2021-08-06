@@ -1,16 +1,22 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
+import { useAppSelect } from "../redux/configStore";
+import { getOriginals } from "../redux/modules/movies";
 const Originals = () => {
+  const originals = useAppSelect(getOriginals);
   return (
     <Container>
-      <h4>Originals</h4>
+      <h4>New to Disney+</h4>
       <Content>
-        <Wrap>
-          <Link to="">
-            <img src="" />
-          </Link>
-        </Wrap>
+        {originals?.map((movie) => {
+          return (
+            <Wrap key={movie.id}>
+              <Link to={`/detail/original/${movie.id}`}>
+                <img src={movie.cardImg} alt={movie.title} />
+              </Link>
+            </Wrap>
+          );
+        })}
       </Content>
     </Container>
   );

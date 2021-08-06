@@ -1,18 +1,23 @@
 import styled from "styled-components";
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAppSelect } from "../redux/configStore";
+import { getRecommends } from "../redux/modules/movies";
 const Recommends = () => {
+  const recommends = useAppSelect(getRecommends);
   return (
     <Container>
       <h4>Recommended for You</h4>
       <Content>
-        {/* ㄴㅏ중에 map으로 돌리기 */}
-        <Wrap>
-          movieId
-          <Link to="">
-            <img src="cardImg" alt="" />
-          </Link>
-        </Wrap>
+        {recommends?.map((movie) => {
+          return (
+            <Wrap key={movie.id}>
+              <Link to={`/detail/recommend/${movie.id}`}>
+                <img src={movie.cardImg} alt={movie.title} />
+              </Link>
+            </Wrap>
+          );
+        })}
       </Content>
     </Container>
   );

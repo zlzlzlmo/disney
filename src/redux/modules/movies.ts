@@ -1,5 +1,5 @@
+import { RootState } from "./../configStore";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
 export interface Movie {
   id: string;
   backgroundImg: string;
@@ -37,6 +37,10 @@ const movieSlice = createSlice({
     },
   },
 });
-
+export const getRecommends = (state: RootState) => state.movies.recommend;
+export const getTrendings = (state: RootState) => state.movies.trending;
+export const getNews = (state: RootState) => state.movies.new;
+export const getOriginals = (state: RootState) => state.movies.original;
+export const getAllMovies = (state: RootState) => state.movies;
 export default movieSlice.reducer;
 export const { setMovies } = movieSlice.actions;

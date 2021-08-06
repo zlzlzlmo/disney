@@ -1,16 +1,22 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
+import { useAppSelect } from "../redux/configStore";
+import { getTrendings } from "../redux/modules/movies";
 const Trending = () => {
+  const trendings = useAppSelect(getTrendings);
   return (
     <Container>
-      <h4>Trending</h4>
+      <h4>Recommended for You</h4>
       <Content>
-        <Wrap>
-          <Link to="">
-            <img src="" alt="" />
-          </Link>
-        </Wrap>
+        {trendings?.map((movie) => {
+          return (
+            <Wrap key={movie.id}>
+              <Link to={`/detail/trending/${movie.id}`}>
+                <img src={movie.cardImg} alt={movie.title} />
+              </Link>
+            </Wrap>
+          );
+        })}
       </Content>
     </Container>
   );
