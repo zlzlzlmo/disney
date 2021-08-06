@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import user from "./modules/user";
+import movies from "./modules/movies";
 const store = configureStore({
-  reducer: { user },
+  reducer: { user, movies },
 });
 
 export type AppDispatch = typeof store.dispatch;
