@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { auth, provider } from "../firebase";
+import Swal from "sweetalert2";
 import { useAppSelect, useAppDispatch } from "../redux/configStore";
 import {
   setUserLoginDetails,
@@ -19,7 +20,27 @@ const Header = () => {
   const userPhoto = useAppSelect(selectUserPhoto) as string;
 
   useEffect(() => {
-    userName !== null ? history.push("/home") : history.push("/");
+    if (userName !== null) {
+      history.push("/home");
+    } else {
+      history.push("/");
+    }
+    auth.onAuthStateChanged(function (user) {
+      if (user) {
+        const userData: UserState = {
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+        };
+        dispatch(setUserLoginDetails(userData));
+      } else {
+        Swal.fire({
+          text: "로그인을 해주세요",
+          confirmButtonColor: "#0483ee",
+          confirmButtonText: "확인",
+        });
+      }
+    });
   }, [userName]);
 
   const handleSignIn = () => {

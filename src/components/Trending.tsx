@@ -6,7 +6,7 @@ const Trending = () => {
   const trendings = useAppSelect(getTrendings);
   return (
     <Container>
-      <h4>Recommended for You</h4>
+      <h4>핫한 영상</h4>
       <Content>
         {trendings?.map((movie) => {
           return (

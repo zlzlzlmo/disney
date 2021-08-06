@@ -6,7 +6,7 @@ const Originals = () => {
   const originals = useAppSelect(getOriginals);
   return (
     <Container>
-      <h4>New to Disney+</h4>
+      <h4>오리지날</h4>
       <Content>
         {originals?.map((movie) => {
           return (

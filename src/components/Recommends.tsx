@@ -7,7 +7,7 @@ const Recommends = () => {
   const recommends = useAppSelect(getRecommends);
   return (
     <Container>
-      <h4>Recommended for You</h4>
+      <h4>당신을 위한 추천 영상</h4>
       <Content>
         {recommends?.map((movie) => {
           return (

@@ -6,7 +6,7 @@ const NewDisney = () => {
   const news = useAppSelect(getNews);
   return (
     <Container>
-      <h4>New to Disney+</h4>
+      <h4>새롭게 나왔어요 :)</h4>
       <Content>
         {news?.map((movie) => {
           return (
