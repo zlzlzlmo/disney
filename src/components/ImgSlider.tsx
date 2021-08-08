@@ -28,19 +28,16 @@ const ImgSlider = () => {
           <img src="/images/slider-badging.jpeg" alt="" />
         </a>
       </Wrap>
-
       <Wrap>
         <a>
           <img src="/images/slider-scale.jpeg" alt="" />
         </a>
       </Wrap>
-
       <Wrap>
         <a>
           <img src="/images/slider-badag.jpeg" alt="" />
         </a>
       </Wrap>
-
       <Wrap>
         <a>
           <img src="/images/slider-scales.jpeg" alt="" />
