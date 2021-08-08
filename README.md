@@ -1,46 +1,143 @@
-# Getting Started with Create React App
+# 디즈니플러스 클론 코딩
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[프로젝트 보러가기! 👍](https://disneyplusclone-c04df.web.app/)
 
-## Available Scripts
+## 사용언어는 ?
 
-In the project directory, you can run:
+> React, TypeScript
 
-### `yarn start`
+## 사용 패키지 || 라이브러리는 ?
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+> firebase, react-router-dom, styled-components, redux-toolkit,react-slick
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 👀 어떤 모습으로 개발이 되었나?
 
-### `yarn test`
+|             |                                          개발된 이미지                                           |
+| ----------: | :----------------------------------------------------------------------------------------------: |
+|      인덱스 | ![](https://images.velog.io/images/hoon_dev/post/a9dac9e3-8010-448e-907b-8dad78bd0d8a/image.png) |
+|          홈 | ![](https://images.velog.io/images/hoon_dev/post/09d11153-e45d-4d06-b26e-ec134faf7e5d/image.png) |
+| 비디오 상세 | ![](https://images.velog.io/images/hoon_dev/post/b3aef7ff-dcd4-4367-b7f1-8f7e1e6228d7/image.png) |
+|    로그아웃 | ![](https://images.velog.io/images/hoon_dev/post/d7cdafda-f66c-494f-b82f-01c5f1ca925d/image.png) |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🕹 기능정보
 
-### `yarn build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 1. 구글로그인
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Firebase Auth를 사용하여 구글 로그인 기능 구현
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```ts
+auth.onAuthStateChanged(function (user) {
+  if (user) {
+    const userData: UserState = {
+      name: user.displayName,
+      email: user.email,
+      photo: user.photoURL,
+    };
+    dispatch(setUserLoginDetails(userData));
+  } else {
+    Swal.fire({
+      text: "로그인을 해주세요",
+      confirmButtonColor: "#0483ee",
+      confirmButtonText: "확인",
+    });
+  }
+});
+```
 
-### `yarn eject`
+### 2. 슬라이드 구현
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- react-slick 사용하여 슬라이드 구현
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```ts
+let settings: SliderSetting = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+  };
+  return (
+    <Carousel {...settings}>
+      <Wrap>
+        <a>
+          <img src="/images/slider-badging.jpeg" alt="" />
+        </a>
+      </Wrap>
+      <Wrap>
+        <a>
+          <img src="/images/slider-scale.jpeg" alt="" />
+        </a>
+      </Wrap>
+      <Wrap>
+        <a>
+          <img src="/images/slider-badag.jpeg" alt="" />
+        </a>
+      </Wrap>
+      <Wrap>
+        <a>
+          <img src="/images/slider-scales.jpeg" alt="" />
+        </a>
+      </Wrap>
+    </Carousel>
+  );
+};
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 3. FireStore 에 들어가있는 타입별 비디오 정보 가져오기
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- switch case 분기문으로 타입별로 reudx 상태값에 저장
 
-## Learn More
+```ts
+useEffect(() => {
+  db.collection("movies").onSnapshot((snapshot) => {
+    snapshot.docs.map((doc) => {
+      let data = { id: doc.id, ...doc.data() };
+      switch (doc.data().type) {
+        case "recommend":
+          recommends.push(data);
+          break;
+        case "trending":
+          trendings.push(data);
+          break;
+        case "original":
+          originals.push(data);
+          break;
+        case "new":
+          newDisneys.push(data);
+          break;
+      }
+    });
+    dispatch(
+      setMovies({
+        recommend: recommends,
+        trending: trendings,
+        original: originals,
+        new: newDisneys,
+      })
+    );
+  });
+}, []);
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 4. 로그아웃
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- firebase 로그아웃
+
+```ts
+const handleSignOut = () => {
+  auth
+    .signOut()
+    .then(() => {
+      dispatch(setSignOutState());
+      history.push("/");
+    })
+    .catch((error) => alert(error.message));
+};
+```
+
+---
+
+😎 감사합니다 :)
